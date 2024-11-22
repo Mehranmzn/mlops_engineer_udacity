@@ -156,7 +156,7 @@ def test_train_models(df_fe):
         raise e
 
     # Check generated images
-    for img_name in ["Logistic_Regression", "Random_Forest", "Feature_Importance", "Roc_Curves"]:
+    for img_name in ["Logistic_Regression_report", "Random_Forest_report", "Feature_Importance", "Roc_Curves"]:
         try:
             with open(f"images/results/{img_name}.jpg", "r"):
                 logging.info(f"Testing train_models: {img_name} image created successfully")

@@ -5,5 +5,6 @@ pandas
 numpy
 matplotlib
 seaborn
+pytest
 pylint
 autopep8

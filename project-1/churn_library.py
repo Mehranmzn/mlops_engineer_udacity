@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 from sklearn.metrics import  classification_report
-from sklearn.metrics import plot_roc_curve
+from sklearn.metrics import RocCurveDisplay
 from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
@@ -71,26 +71,26 @@ def perform_eda(df):
         elif col == "Total_Trans_Ct":
             sns.histplot(df[col], kde=True, stat="density")
         elif col == "Heatmap":
-            sns.heatmap(df.corr(), annot=False, cmap="Dark2_r", linewidths=2)
+            numeric_df = df.select_dtypes(include=['number'])
+            sns.heatmap(numeric_df.corr(), annot=False, cmap="Dark2_r", linewidths=2)        
         plt.savefig(f"images/eda/{col}.jpg")
         plt.close()
 
 
-def encoder_helper(df, category_columns, response):
+def encoder_helper(df, category_lst, response):
     """
-    Encode categorical columns by adding churn rate as new features.
-
+    Helper function to encode categorical columns with the proportion of churn.
     Args:
-        df (pd.DataFrame): Input DataFrame.
-        category_columns (list): List of categorical column names.
-        response (str): Response column name for churn rate calculation.
+        df (pd.DataFrame): The input DataFrame.
+        category_lst (list): List of categorical column names.
+        response (str): Name of the response column (target variable).
 
     Returns:
-        pd.DataFrame: DataFrame with encoded features.
+        pd.DataFrame: DataFrame with encoded categorical columns.
     """
-    for col in category_columns:
-        churn_rates = df.groupby(col)[response].mean()
-        df[f"{col}_{response}"] = df[col].map(churn_rates)
+    for category in category_lst:
+        churn_rates = df.groupby(category)[response].mean()
+        df[f"{category}_{response}"] = df[category].map(churn_rates)
     return df
 
 
@@ -200,10 +200,12 @@ def train_models(x_train, x_test, y_train, y_test):
     # Save ROC curve
     plt.figure(figsize=(15, 8))
     axis = plt.gca()
-    plot_roc_curve(cv_rfc.best_estimator_, x_test, y_test, ax=axis, alpha=0.8)
-    plot_roc_curve(lrc, x_test, y_test, ax=axis, alpha=0.8)
+    RocCurveDisplay.from_estimator(lrc, x_test, y_test, ax=axis, alpha=0.8)
+    RocCurveDisplay.from_estimator(cv_rfc.best_estimator_, x_test, y_test, ax=axis, alpha=0.8)
     plt.savefig("images/results/Roc_Curves.jpg")
     plt.close()
+
+
 
     # Save classification report
     classification_report_image(
