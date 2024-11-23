@@ -223,6 +223,8 @@ def train_models(x_train, x_test, y_train, y_test):
 if __name__ == "__main__":
     logger.info("Importing data")
     df = import_data("data/bank_data.csv")
+    print(df.shape)
+    
 
     logger.info("Performing EDA")
     perform_eda(df)
