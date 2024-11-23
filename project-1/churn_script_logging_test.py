@@ -107,7 +107,7 @@ def test_encoder_helper(df_raw, category_lst, expected_columns):
 @pytest.mark.parametrize(
     "response_column, expected_shape",
     [
-        ("Churn", (10127, 22)),  # Replace with realistic dimensions
+        ("Churn", (10127, 22)),  
     ],
 )
 def test_perform_feature_engineering(df_encoded, response_column, expected_shape):
