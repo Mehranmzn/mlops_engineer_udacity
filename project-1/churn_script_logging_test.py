@@ -35,6 +35,7 @@ logging.basicConfig(
 logger = logging.getLogger()
 
 
+
 @pytest.fixture(scope="module")
 def df_raw():
     """Fixture to load raw data."""
@@ -81,6 +82,40 @@ def df_fe(df_encoded):
     except Exception as e:
         logging.error("Feature engineering fixture creation: Error in feature engineering")
         raise e
+
+
+@pytest.mark.parametrize(
+    "category_lst, expected_columns",
+    [
+        (
+            ["Gender", "Education_Level", "Marital_Status"],
+            ["Gender_Churn", "Education_Level_Churn", "Marital_Status_Churn"],
+        ),
+        (
+            ["Income_Category", "Card_Category"],
+            ["Income_Category_Churn", "Card_Category_Churn"],
+        ),
+    ],
+)
+def test_encoder_helper(df_raw, category_lst, expected_columns):
+    """Test the encoder_helper function with multiple category lists."""
+    encoded_data = encoder_helper(df_raw, category_lst=category_lst, response="Churn")
+    assert all(col in encoded_data for col in expected_columns)
+    logging.info("Parameterized test_encoder_helper: SUCCESS")
+
+
+@pytest.mark.parametrize(
+    "response_column, expected_shape",
+    [
+        ("Churn", (7090, 3037)),  # Replace with realistic dimensions
+    ],
+)
+def test_perform_feature_engineering(df_encoded, response_column, expected_shape):
+    """Test feature engineering with parameterized inputs."""
+    x_train, x_test, y_train, y_test = perform_feature_engineering(df_encoded, response=response_column)
+    assert len(x_train) == len(y_train)
+    assert len(x_test) == len(y_test)
+    logging.info("Parameterized test_perform_feature_engineering: SUCCESS")
 
 
 def test_import(df_raw):

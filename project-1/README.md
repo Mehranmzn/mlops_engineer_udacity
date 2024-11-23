@@ -31,3 +31,13 @@ Follow these steps to set up the environment and run the project:
 conda create --name churn_predict python=3.8
 ```
 conda activate churn_predict
+
+### 2. Test the funcitonality of the library
+```bash
+python churn_script_logging_and_tests.py
+```
+or 
+```bash
+pytest churn_script_logging_and_tests.py
+```
+This will run the tests and log the results in the `logs/` directory. The logs will contain information about the test results, including any errors or failures.

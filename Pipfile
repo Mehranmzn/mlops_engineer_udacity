@@ -6,13 +6,14 @@ name = "pypi"
 [packages]
 joblib = "*"
 shap = "*"
-scikit-learn = "*"
 pandas = "*"
 numpy = "*"
 matplotlib = "*"
 seaborn = "*"
 pylint = "*"
 autopep8 = "*"
+scikit-learn = "*"
+pytest = "*"
 
 [dev-packages]
 
