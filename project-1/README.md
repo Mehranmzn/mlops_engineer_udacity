@@ -32,7 +32,13 @@ conda create --name churn_predict python=3.8
 ```
 conda activate churn_predict
 
-### 2. Test the funcitonality of the library
+### 2. Running code
+```bash
+python churn_library.py
+```
+
+
+### 3. Test the funcitonality of the library
 ```bash
 python churn_script_logging_and_tests.py
 ```
